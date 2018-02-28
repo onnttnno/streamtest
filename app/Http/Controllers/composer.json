@@ -1,0 +1,5 @@
+{
+    "require": {
+        "wowza/wse-rest-library-php": "dev-master"
+    }
+}

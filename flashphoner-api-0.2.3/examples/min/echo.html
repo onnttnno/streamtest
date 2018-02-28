@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ECHO APP</title>
+</head>
+<body>
+<script type="text/javascript" src="../../flashphoner.js"></script>
+<div id="local" style="width: 320px; height: 240px"></div>
+<div id="remote" style="width: 320px; height: 240px"></div>
+<BR>
+<script>
+    Flashphoner.init();
+    Flashphoner.createSession({
+        urlServer: "ws://192.168.88.234:8080"
+    }).on(Flashphoner.constants.SESSION_STATUS.ESTABLISHED, function(session) {
+        session.createStream({
+            name: "echoTest",
+            display: document.getElementById('local')
+        }).on(Flashphoner.constants.STREAM_STATUS.PUBLISHING, function(publishStream) {
+            session.createStream({
+                name: "echoTest",
+                display: document.getElementById('remote')
+            }).on(Flashphoner.constants.STREAM_STATUS.PLAYING, function(playingStream) {
+                console.log("Playing");
+            }).play();
+        }).publish();
+    });
+
+</script>
+</body>
+</html>
