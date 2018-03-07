@@ -8,7 +8,7 @@ var peerConnectionConfig = {
 	'iceServers': []
 };
 var localStream = null;
-var wsURL = "wss://localhost.streamlock.net/webrtc-session.json";
+var wsURL = "wss://5a99712c6614f.streamlock.net/webrtc-session.json";
 var wsConnection = null;
 var streamInfo = {
 	applicationName: "webrtc",
@@ -245,13 +245,13 @@ function getUserMediaSuccess(stream) {
 }
 
 function startPublisher() {
-	wsURL = "rtmp://29e544.entrypoint.cloud.wowza.com/app-e35a:1935"; //$('#sdpURL').val();
-	streamInfo.applicationName = "test";
-	streamInfo.streamName = "ee2d836e";
-	videoBitrate = $('#videoBitrate').val();
-	audioBitrate = $('#audioBitrate').val();
-	videoFrameRate = $('#videoFrameRate').val();
-	userAgent = $('#userAgent').val().toLowerCase();
+	//wsURL = "rtmp://29e544.entrypoint.cloud.wowza.com/app-e35a:1935"; //$('#sdpURL').val();
+	streamInfo.applicationName = "webrtc";
+	streamInfo.streamName = "testStream";
+	videoBitrate =360;
+	audioBitrate = 64;
+	videoFrameRate = "29.97";
+	userAgent = "unknown";
 
 	$.cookie("webrtcPublishWSURL", wsURL, {
 		expires: 365
@@ -294,8 +294,8 @@ function stopPublisher() {
 }
 
 function start() {
-	if (peerConnection == null) {
-/*
+/*	if (peerConnection == null) {
+
 		var path = "/api/v1/live_streams";
 		var methode = 'POST';
 		var body = {
@@ -366,8 +366,13 @@ function start() {
 				APIWowza(path, methode, body);
 				window.alert(liveStreamObject.live_stream.hosted_page_url);
 		*/
-		startRecoder();
+		/*startRecoder();
 	} else
+		stopPublisher();*/
+
+	if (peerConnection == null)
+		startPublisher();
+	else
 		stopPublisher();
 }
 
@@ -541,7 +546,7 @@ function startRecoder() {
 	// RecordRTC usage goes here
 	socket.emit('config_rtmpDestination', rtspURL);
 	socket.emit('start', 'start');
-	var arrayBuffer;
+	/*var arrayBuffer;
 	var fileReader = new FileReader();
 	fileReader.onload = function() {
 		arrayBuffer = this.result;
@@ -561,24 +566,25 @@ function startRecoder() {
 			$("#btn-solution").html('stop');
 			$("#btn-solution").attr('class', 'btn btn-danger');
 			var url = document.getElementById("url");
-			url.innerText="http://127.0.0.1:1935/live/test123/playlist.m3u8";
+			url.innerText="https://player.cloud.wowza.com/hosted/fl7bysbb/player.html";
 			//fileReader.readAsArrayBuffer(blob);
 		}
 	};
 	recordRTC = RecordRTC(localStream, options);
-	recordRTC.startRecording();
-	/*recordRTC= new MediaRecorder(localStream);
+	recordRTC.startRecording();*/
+	recordRTC= new MediaRecorder(localStream);
 	recordRTC.start(2000);
 	recordRTC.onstop = function(e) {
 		localStream.stop();
-		/*var button = document.getElementById("btn-solution");
-		button.innerText = "start";
-		button.className = "btn btn-success";*/
-		/*$("#btn-solution").html('start');
+		//var button = document.getElementById("btn-solution");
+		//button.innerText = "start";
+		//button.className = "btn btn-success";
+		$("#btn-solution").html('start');
 		$("#btn-solution").attr('class', 'btn btn-success');
 		var url = document.getElementById("url");
 		url.innerText="";
 	  //	url.innerText="";
+		window.location.reload();
 	}
 	recordRTC.ondataavailable = function(e) {
 		$("#btn-solution").html('stop');
@@ -586,7 +592,7 @@ function startRecoder() {
 		 //alert("http://127.0.0.1:1935/live/test123/playlist.m3u8");
 		 //chunks.push(e.data);
 		 var url = document.getElementById("url");
-		 url.innerText="http://127.0.0.1:1935/live/test123/playlist.m3u8";
+		 url.innerText="https://player.cloud.wowza.com/hosted/fl7bysbb/player.html";
 	  socket.emit("binarystream",e.data);
 	 /* var button = document.getElementById("btn-solution");
 	  button.innerText = "live";
@@ -678,4 +684,5 @@ function stop(){
 
 	});*/
 	//recordRTC.stopRecording();
+}
 }
