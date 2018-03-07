@@ -38,7 +38,6 @@
                         <input type="hidden" id="userAgent" name="userAgent" value="" />
 
                     <h2><button id="btn-solution" type="button" class="btn btn-success"  onclick="start()">start</button></h2>
-                    <h2 id="url"></h2>
                     <div class="div-section">
                         <video id="localVideo" autoplay muted style="height:480px;"></video>
                     </div>
